@@ -9,6 +9,8 @@ function Register({ nextHandle }) {
   //비밀번호
   const [pw, setPw] = useState('')
   const [checkPw, setCheckPw] = useState('') //비밀번호 확인
+  const [showPw, setShowPw] = useState(false)
+  const [showCheckPw, setShowCheckPw] = useState(false)
 
   //다음화면 보여줄 것인지
   const [disabled, setDisabled] = useState(true)
@@ -106,12 +108,32 @@ function Register({ nextHandle }) {
                 : ""
               }`}
           >
-            {idText}
+            {idText} <span className="text-gray-500">(영어 + 숫자만 가능합니다)</span>
           </p>
           <Input className={"bg-gray-300 h-10 w-full border-solid mb-8 p-2"} type="text" name="username" value={user} onChange={(e) => userCheck(e)} />
           <label className="text-sm text-black mb-2">비밀번호</label>
-          <p className="text-red-500 text-xs">{pwText}</p>
-          <Input className={"bg-gray-300 h-10 w-full border-solid mb-8 p-2"} type="password" name="password" value={pw} onChange={(e) => pwCheck(e)} />
+          <p className="text-red-500 text-xs">
+            {pwText}
+            {!pwText && (
+              <span className="text-gray-500">(특수문자는 @ $ ! % * ? &만 허용됩니다)</span>
+            )}
+          </p>
+          <div className="relative mb-8">
+            <Input
+              className={"bg-gray-300 h-10 w-full border-solid p-2"}
+              type={showPw ? "text" : "password"}
+              name="password"
+              value={pw}
+              onChange={(e) => pwCheck(e)}
+            />
+            <button
+              type="button"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-600"
+              onClick={() => setShowPw((prev) => !prev)}
+            >
+              {showPw ? "숨김" : "보기"}
+            </button>
+          </div>
           <label className="text-sm text-black mb-2">비밀번호 확인</label>
           <p
             className={`text-xs ${pwCheckText === "비밀번호가 일치합니다"
@@ -123,7 +145,22 @@ function Register({ nextHandle }) {
           >
             {pwCheckText}
           </p>
-          <Input className={"bg-gray-300 h-10 w-full border-solid mb-8 p-2"} type="password" name="passwordCheck" value={checkPw} onChange={(e) => samePwCheck(e)} />
+          <div className="relative mb-8">
+            <Input
+              className={"bg-gray-300 h-10 w-full border-solid p-2"}
+              type={showCheckPw ? "text" : "password"}
+              name="passwordCheck"
+              value={checkPw}
+              onChange={(e) => samePwCheck(e)}
+            />
+            <button
+              type="button"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-600"
+              onClick={() => setShowCheckPw((prev) => !prev)}
+            >
+              {showCheckPw ? "숨김" : "보기"}
+            </button>
+          </div>
           <button
             type="submit"
             className={`flex w-full justify-center rounded-[3px] p-2 mt-5  ${disabled ? "bg-gray-300" : "bg-blue-500"}`}
