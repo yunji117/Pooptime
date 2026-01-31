@@ -73,7 +73,7 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz' }) {
         {/* 팝업 */}
         <ToastPopup text={toastText} isShow={isShow} textColor={textColor} />
         {/* 정답 작성 및 확인 */}
-        <div className="w-full flex border-[1px] border-[#D9D9D9]/70">
+        <div className="w-full flex border border-[#D9D9D9]/70">
           <input
             className="w-full outline-none p-2"
             type="text"

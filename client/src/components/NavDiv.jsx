@@ -9,7 +9,7 @@ function NavDiv({ navRef, btnClick, closeNav }) {
   return (
     <div
       ref={navRef} // 이 안에 있는 요소는 이벤트 방지함
-      className={`bg-[color:var(--surface-0)] text-[color:var(--text-900)] shadow-[0_-10px_30px_rgba(0,0,0,0.08)] absolute flex-col items-center bottom-0 justify-center gap-20 p-4 w-full rounded-t-full h-[230px] max-w-[450px] max-h-[450px] transition-all duration-300 ease-in-out ${btnClick ? "flex opacity-100 pointer-events-auto" : "flex pointer-events-none opacity-0"
+      className={`bg-(--surface-0) text-(--text-900) shadow-[0_-10px_30px_rgba(0,0,0,0.08)] absolute flex-col items-center bottom-0 justify-center gap-20 p-4 w-full rounded-t-full h-57.5 max-w-112.5 max-h-112.5 transition-all duration-300 ease-in-out ${btnClick ? "flex opacity-100 pointer-events-auto" : "flex pointer-events-none opacity-0"
         }`}
     >
       <div className="flex">

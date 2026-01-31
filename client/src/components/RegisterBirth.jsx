@@ -86,7 +86,7 @@ const RegisterBirth = ({ nextHandle }) => {
         <button
           onClick={handleForward}
           disabled={!gender || !birthdate}
-          className={`w-full py-2 rounded transition-colors ${(gender && birthdate) ? 'bg-[color:var(--brand-600)] text-white hover:bg-[color:var(--brand-700)]' : 'bg-[color:var(--brand-100)] text-[color:var(--brand-700)] cursor-not-allowed'}`}
+          className={`w-full py-2 rounded transition-colors ${(gender && birthdate) ? 'bg-(--brand-600) text-white hover:bg-(--brand-700)' : 'bg-(--brand-100) text-(--brand-700) cursor-not-allowed'}`}
         >
           다음
         </button>

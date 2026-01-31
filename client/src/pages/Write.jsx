@@ -87,7 +87,7 @@ function Write() {
             />
           </div>
           <button
-            className="mt-10 w-full bg-[color:var(--brand-600)] hover:bg-[color:var(--brand-700)] text-white font-bold py-2 px-4 rounded-md transition-colors"
+            className="mt-10 w-full bg-(--brand-600) hover:bg-(--brand-700) text-white font-bold py-2 px-4 rounded-md transition-colors"
             type="submit"
             onClick={page ? editBtn : writeBtn}
           >

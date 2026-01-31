@@ -5,7 +5,7 @@ function RegisterprevBtn({ flag, setFlag }) {
 
   return (
     <button
-      className="bg-[color:var(--brand-100)] text-[color:var(--brand-800)] rounded-[3px] p-2 mt-5 hover:bg-[color:var(--brand-200)] transition-colors"
+      className="bg-(--brand-100) text-(--brand-800) rounded-[3px] p-2 mt-5 hover:bg-(--brand-200) transition-colors"
       onClick={() => {
         setFlag(flag - 1);
       }}

@@ -112,6 +112,20 @@ function CommunityDetail() {
       .then(setComments);
   };
 
+  const formatCommentDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return "";
+    const kst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+    const yy = String(kst.getUTCFullYear()).slice(-2);
+    const mm = String(kst.getUTCMonth() + 1).padStart(2, "0");
+    const dd = String(kst.getUTCDate()).padStart(2, "0");
+    const hh = String(kst.getUTCHours()).padStart(2, "0");
+    const min = String(kst.getUTCMinutes()).padStart(2, "0");
+    const ss = String(kst.getUTCSeconds()).padStart(2, "0");
+    return `${yy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+  };
+
   return (
     <div className="w-full">
       <div>
@@ -121,11 +135,11 @@ function CommunityDetail() {
         <>
           <div className="">
             <Link to={`/community/write/${data.board_id}`} state={data}>
-              <Button text={"수정"} colorClass={"bg-[color:var(--brand-100)] text-[color:var(--brand-800)] hover:bg-[color:var(--brand-200)]"} />
+              <Button text={"수정"} colorClass={"bg-(--brand-100) text-(--brand-800) hover:bg-(--brand-200)"} />
             </Link>
             <Button
               text={"삭제"}
-              colorClass={"bg-[color:var(--brand-100)] text-[color:var(--brand-800)] hover:bg-[color:var(--brand-200)]"}
+              colorClass={"bg-(--brand-100) text-(--brand-800) hover:bg-(--brand-200)"}
               clickEvent={(e) => deleteBtn(e)}
             />
           </div>
@@ -169,9 +183,9 @@ function CommunityDetail() {
 
       {/*댓글영역*/}
 
-      <div className="border-[1px] flex border-[#D9D9D9]/70 mb-3">
+      <div className="relative border w-full border-[#D9D9D9]/70 mb-3">
         <Input
-          className="w-full outline-none p-2 text-sm"
+          className="w-full outline-none p-2 pr-20 text-sm"
           type="text"
           placeholder="댓글을 입력해주세요."
           value={content}
@@ -179,7 +193,7 @@ function CommunityDetail() {
         />
         <button
           onClick={commentWrite}
-          className="bg-[#8E5E43] border-[#8E5E43] p-2 rounded-[0px_3px_3px_0px] text-white whitespace-nowrap text-sm cursor-pointer"
+          className="absolute right-0 top-0 h-full bg-(--brand-600) border-(--brand-600) px-4 text-white whitespace-nowrap text-sm cursor-pointer"
         >
           확인
         </button>
@@ -189,7 +203,7 @@ function CommunityDetail() {
           <div key={c.id} className="mb-2">
             <p className="font-bold">{c.user_nick}</p>
             <p>{c.content}</p>
-            <span className="text-xs text-gray-500">{c.date}</span>
+            <span className="text-xs text-gray-500">{formatCommentDate(c.date)}</span>
           </div>
         ))}
       </div>

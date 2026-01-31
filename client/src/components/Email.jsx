@@ -122,7 +122,7 @@ function Email({ nextHandle }) {
             type="button"
             onClick={handleSendCode}
             disabled={!isEmailVaild}
-            className={`px-4 py-2 rounded transition-colors ${isEmailVaild ? "bg-[color:var(--brand-600)] text-white hover:bg-[color:var(--brand-700)]" : "bg-[color:var(--brand-100)] text-[color:var(--brand-800)]"}`}
+            className={`px-4 py-2 rounded transition-colors ${isEmailVaild ? "bg-(--brand-600) text-white hover:bg-(--brand-700)" : "bg-(--brand-100) text-(--brand-800)"}`}
           >
             인증
           </button>
@@ -150,7 +150,7 @@ function Email({ nextHandle }) {
         type="button"
         disabled={!isEmailVaild}
         onClick={handleNext}
-        className={`w-full py-2 rounded transition-colors ${isCodeMatch ? "bg-[color:var(--brand-600)] text-white hover:bg-[color:var(--brand-700)]" : "bg-[color:var(--brand-100)] text-[color:var(--brand-800)]"}`}
+        className={`w-full py-2 rounded transition-colors ${isCodeMatch ? "bg-(--brand-600) text-white hover:bg-(--brand-700)" : "bg-(--brand-100) text-(--brand-800)"}`}
       >
         다음
       </button>
