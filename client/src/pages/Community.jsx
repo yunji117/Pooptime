@@ -61,7 +61,7 @@ export default function Community() {
     // 이전 페이지 버튼 
     if (totalPages >= 10 && currentPage > 1) {
       pageButtons.push(
-        <button key="prev" onClick={() => setCurrentPage(currentPage - 1)} className="px-2 py-1 text-gray-600">
+        <button key="prev" onClick={() => setCurrentPage(currentPage - 1)} className="px-2 py-1 text-[color:var(--brand-700)] hover:text-[color:var(--brand-900)]">
           &lt;
         </button>
       );
@@ -74,7 +74,7 @@ export default function Community() {
         <button
           key={i}
           onClick={() => setCurrentPage(i)}
-          className={`px-3 py-1 mx-1 ${currentPage === i ? 'font-medium text-blue-600' : 'text-gray-600'
+          className={`px-3 py-1 mx-1 ${currentPage === i ? 'font-medium text-[color:var(--brand-700)]' : 'text-[color:var(--text-600)]'
             }`}
         >
           {i}
@@ -85,7 +85,7 @@ export default function Community() {
     // 다음 페이지 버튼
     if (totalPages >= 10 && currentPage < totalPages) {
       pageButtons.push(
-        <button key="next" onClick={() => setCurrentPage(currentPage + 1)} className="px-2 py-1 text-gray-600">
+        <button key="next" onClick={() => setCurrentPage(currentPage + 1)} className="px-2 py-1 text-[color:var(--brand-700)] hover:text-[color:var(--brand-900)]">
           &gt;
         </button>
       );
@@ -104,7 +104,7 @@ export default function Community() {
             <h1 className="text-lg font-medium ">커뮤니티</h1>
             <div className='flex justify-end mb-2'>
               {isLogin === true &&
-                <button type="button" onClick={goToWritePage} className="px-3 py-2 bg-gray-200 rounded-md text-xs">
+                <button type="button" onClick={goToWritePage} className="px-3 py-2 rounded-md text-xs bg-[color:var(--brand-600)] text-white hover:bg-[color:var(--brand-700)] transition-colors">
                   글쓰기
                 </button>
               }

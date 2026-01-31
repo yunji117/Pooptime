@@ -77,7 +77,7 @@ const RegisterNickname = () => {
         <button
           onClick={handelSubmit}
           type="submit"
-          className={`w-full py-2 rounded ${nickname === "" ? "bg-gray-300" : "bg-blue-500"
+          className={`w-full py-2 rounded transition-colors ${nickname === "" ? "bg-[color:var(--brand-100)] text-[color:var(--brand-700)]" : "bg-[color:var(--brand-600)] text-white hover:bg-[color:var(--brand-700)]"
             }`}
         >
           다음

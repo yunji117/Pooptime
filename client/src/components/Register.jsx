@@ -163,7 +163,7 @@ function Register({ nextHandle }) {
           </div>
           <button
             type="submit"
-            className={`flex w-full justify-center rounded-[3px] p-2 mt-5  ${disabled ? "bg-gray-300" : "bg-blue-500"}`}
+            className={`flex w-full justify-center rounded-[3px] p-2 mt-5 transition-colors ${disabled ? "bg-[color:var(--brand-100)] text-[color:var(--brand-700)]" : "bg-[color:var(--brand-600)] text-white hover:bg-[color:var(--brand-700)]"}`}
             disabled={disabled}
           >
             다음

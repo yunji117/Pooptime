@@ -121,11 +121,11 @@ function CommunityDetail() {
         <>
           <div className="">
             <Link to={`/community/write/${data.board_id}`} state={data}>
-              <Button text={"수정"} colorClass={"bg-gray-300"} />
+              <Button text={"수정"} colorClass={"bg-[color:var(--brand-100)] text-[color:var(--brand-800)] hover:bg-[color:var(--brand-200)]"} />
             </Link>
             <Button
               text={"삭제"}
-              colorClass={"bg-gray-300"}
+              colorClass={"bg-[color:var(--brand-100)] text-[color:var(--brand-800)] hover:bg-[color:var(--brand-200)]"}
               clickEvent={(e) => deleteBtn(e)}
             />
           </div>

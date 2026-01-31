@@ -15,7 +15,7 @@ import Nav from "./commonComponents/Nav.jsx";
 
 function App() {
   return (
-    <div className="App">
+    <div className="min-h-screen bg-[color:var(--surface-1)] text-[color:var(--text-900)]">
       <Router>
         <LoginProvider>
           <Home>

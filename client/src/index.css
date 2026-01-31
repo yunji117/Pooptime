@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+:root {
+	--brand-50: #fdf8f3;
+	--brand-100: #f7eadd;
+	--brand-200: #eed6c3;
+	--brand-300: #e0b89a;
+	--brand-400: #cc946c;
+	--brand-500: #b4774b;
+	--brand-600: #8e5e43;
+	--brand-700: #724835;
+	--brand-800: #5b3a2c;
+	--brand-900: #3d261f;
+	--surface-0: #ffffff;
+	--surface-1: #f8f5f1;
+	--text-900: #2b1f17;
+	--text-600: #6b5a4d;
+}
+
+body {
+	margin: 0;
+	background-color: var(--surface-1);
+	color: var(--text-900);
+	font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, -apple-system, sans-serif;
+}

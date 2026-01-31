@@ -86,7 +86,7 @@ function Terms({ nextHandle }) {
             [동의하기] 버튼을 누르면 약관에 동의한 것으로 간주됩니다.
           </p>
         </div>
-        <button className={`flex w-full justify-center rounded-[3px] p-2 mt-5 ${privacyChecked && termsChecked ? "bg-blue-500 text-white" : "bg-[#D9D9D9]"}`}
+        <button className={`flex w-full justify-center rounded-[3px] p-2 mt-5 transition-colors ${privacyChecked && termsChecked ? "bg-[color:var(--brand-600)] text-white hover:bg-[color:var(--brand-700)]" : "bg-[color:var(--brand-100)] text-[color:var(--brand-700)]"}`}
           onClick={() => {
             if (privacyChecked && termsChecked) {
               nextHandle() // 회원가입 페이지로 이동

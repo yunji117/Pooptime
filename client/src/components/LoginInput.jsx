@@ -70,7 +70,7 @@ function LoginInput({ autoLogin }) {
       <p className="text-red-500">{text}</p>
       <Button
         text="로그인"
-        colorClass="bg-gray-300"
+        colorClass=""
         clickEvent={() => login()}
       />
     </form>
