@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS quiz (
 
 CREATE TABLE IF NOT EXISTS horror (
   id SERIAL PRIMARY KEY,
-  question TEXT NOT NULL,
+  title TEXT NOT NULL,
+  problem TEXT NOT NULL,
   answer TEXT NOT NULL
 );
 

@@ -46,7 +46,7 @@ function AllCategory() {
 
   return (
     <div className="w-full">
-      <QuizCard quizData={data[num]} />
+      <QuizCard quizData={data[num]} category={category} />
       <QuizButton nextBtn={() => nextBtn()} prevBtn={() => prevBtn()} data={data[num]} category={category} />
     </div>
   );
