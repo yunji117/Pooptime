@@ -68,3 +68,18 @@ CREATE TABLE IF NOT EXISTS user_viewed_content (
   viewed_at TIMESTAMP NOT NULL DEFAULT NOW(),
   UNIQUE (user_id, board_id)
 );
+CREATE TABLE IF NOT EXISTS user_recommend (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  board_id INTEGER NOT NULL REFERENCES board(board_id) ON DELETE CASCADE,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  UNIQUE (user_id, board_id)
+);
+
+CREATE TABLE IF NOT EXISTS user_favorite (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  board_id INTEGER NOT NULL REFERENCES board(board_id) ON DELETE CASCADE,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  UNIQUE (user_id, board_id)
+);

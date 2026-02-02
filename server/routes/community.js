@@ -165,4 +165,165 @@ router.delete('/viewed/:id', async (req, res) => {
   }
 });
 
+// 추천 추가
+router.post('/recommend', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, msg: '로그인 필요' });
+  }
+
+  const { board_id } = req.body;
+  if (!board_id) {
+    return res.status(400).json({ success: false, msg: 'board_id가 필요합니다.' });
+  }
+
+  try {
+    await pool.query(
+      "INSERT INTO user_recommend (user_id, board_id, created_at) VALUES ($1, $2, NOW())",
+      [req.session.user.id, board_id]
+    );
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('추천 추가 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+// 추천 취소
+router.delete('/recommend/:boardId', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, msg: '로그인 필요' });
+  }
+
+  const { boardId } = req.params;
+  try {
+    await pool.query(
+      "DELETE FROM user_recommend WHERE user_id = $1 AND board_id = $2",
+      [req.session.user.id, boardId]
+    );
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('추천 취소 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+// 추천 수 조회
+router.get('/:boardId/recommend-count', async (req, res) => {
+  const { boardId } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT COUNT(*) as count FROM user_recommend WHERE board_id = $1",
+      [boardId]
+    );
+    return res.status(200).json({ success: true, count: parseInt(result.rows[0].count) });
+  } catch (err) {
+    console.error('추천 수 조회 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+// 사용자의 추천 여부 확인
+router.get('/:boardId/recommend-status', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(200).json({ success: true, isRecommended: false });
+  }
+
+  const { boardId } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT id FROM user_recommend WHERE user_id = $1 AND board_id = $2",
+      [req.session.user.id, boardId]
+    );
+    return res.status(200).json({ success: true, isRecommended: result.rows.length > 0 });
+  } catch (err) {
+    console.error('추천 여부 확인 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+// 즐찾 추가
+router.post('/favorite', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, msg: '로그인 필요' });
+  }
+
+  const { board_id } = req.body;
+  if (!board_id) {
+    return res.status(400).json({ success: false, msg: 'board_id가 필요합니다.' });
+  }
+
+  try {
+    await pool.query(
+      "INSERT INTO user_favorite (user_id, board_id, created_at) VALUES ($1, $2, NOW())",
+      [req.session.user.id, board_id]
+    );
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('즐찾 추가 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+// 즐찾 삭제
+router.delete('/favorite/:boardId', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, msg: '로그인 필요' });
+  }
+
+  const { boardId } = req.params;
+  try {
+    await pool.query(
+      "DELETE FROM user_favorite WHERE user_id = $1 AND board_id = $2",
+      [req.session.user.id, boardId]
+    );
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('즐찾 삭제 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+// 사용자의 즐찾 여부 확인
+router.get('/:boardId/favorite-status', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(200).json({ success: true, isFavorited: false });
+  }
+
+  const { boardId } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT id FROM user_favorite WHERE user_id = $1 AND board_id = $2",
+      [req.session.user.id, boardId]
+    );
+    return res.status(200).json({ success: true, isFavorited: result.rows.length > 0 });
+  } catch (err) {
+    console.error('즐찾 여부 확인 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+// 사용자의 즐찾 목록 조회
+router.get('/user/favorites', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, msg: '로그인 필요' });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT uf.id, uf.created_at, b.board_id, b.title, b.date, u.user_nick as nickname
+       FROM user_favorite AS uf
+       JOIN board AS b ON uf.board_id = b.board_id
+       JOIN users AS u ON b.user_id = u.id
+       WHERE uf.user_id = $1
+       ORDER BY uf.created_at DESC`,
+      [req.session.user.id]
+    );
+
+    return res.status(200).json({ success: true, items: result.rows });
+  } catch (err) {
+    console.error('즐찾 목록 조회 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
 export default router;

@@ -9,6 +9,7 @@ import Mypage from "./pages/Mypage.jsx";
 import MemberInfo from "./pages/MemberInfo.jsx";
 import MyCorrectQuiz from "./pages/MyCorrectQuiz.jsx";
 import MyViewedContent from "./pages/MyViewedContent.jsx";
+import MyFavorite from "./pages/MyFavorite.jsx";
 import Layout from "./layout/Layout.jsx";
 import Write from "./pages/Write.jsx";
 import RegisterMain from "./pages/RegisterMain.jsx";
@@ -38,6 +39,7 @@ function App() {
               <Route path="/Mypage/info" element={<MemberInfo />} />
               <Route path="/Mypage/correct" element={<MyCorrectQuiz />} />
               <Route path="/Mypage/viewed" element={<MyViewedContent />} />
+              <Route path="/Mypage/favorite" element={<MyFavorite />} />
               <Route path="/Register" element={<RegisterMain />} />
               {/* Layout 적용 구간: path 가 "/KnowledgeHorror" 또는 "/Quiz" 인 경우에만 */}
               <Route element={<Layout />}>

@@ -22,6 +22,12 @@ function CommunityDetail() {
   const [user_pk, setUserPk] = useState(null);
   const [content, setContent] = useState("");
   const [comments, setComments] = useState([]);
+  //추천 수
+  const [recommendCount, setRecommendCount] = useState(0);
+  //추천 여부
+  const [isRecommended, setIsRecommended] = useState(false);
+  //즐찾 여부
+  const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8080/community/post/${params.board_id}`)
@@ -36,6 +42,28 @@ function CommunityDetail() {
     setIsSame(nick === data.nickname);
     // setData(location.state)
   }, [data, isLogin]);
+
+  // 추천 수 및 상태 조회
+  useEffect(() => {
+    if (!data.board_id) return;
+
+    Promise.all([
+      fetch(`http://localhost:8080/community/${data.board_id}/recommend-count`),
+      fetch(`http://localhost:8080/community/${data.board_id}/recommend-status`, {
+        credentials: 'include',
+      }),
+      fetch(`http://localhost:8080/community/${data.board_id}/favorite-status`, {
+        credentials: 'include',
+      }),
+    ])
+      .then(([res1, res2, res3]) => Promise.all([res1.json(), res2.json(), res3.json()]))
+      .then(([countData, statusData, favoriteData]) => {
+        if (countData.success) setRecommendCount(countData.count);
+        if (statusData.success) setIsRecommended(statusData.isRecommended);
+        if (favoriteData.success) setIsFavorited(favoriteData.isFavorited);
+      })
+      .catch(console.error);
+  }, [data.board_id]);
 
   //삭제 함수
   const deleteBtn = async (e) => {
@@ -56,6 +84,80 @@ function CommunityDetail() {
       alert("삭제 실패했습니다");
     }
     // const result = await response.json()
+  };
+
+  // 추천 버튼 핸들러
+  const handleRecommend = async () => {
+    if (!isLogin) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      if (isRecommended) {
+        // 추천 취소
+        const response = await fetch(`http://localhost:8080/community/recommend/${data.board_id}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+        if (response.ok) {
+          setIsRecommended(false);
+          setRecommendCount((prev) => prev - 1);
+        }
+      } else {
+        // 추천 추가
+        const response = await fetch("http://localhost:8080/community/recommend", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ board_id: Number(data.board_id) }),
+        });
+        if (response.ok) {
+          setIsRecommended(true);
+          setRecommendCount((prev) => prev + 1);
+        }
+      }
+    } catch (err) {
+      console.error("추천 처리 실패", err);
+    }
+  };
+
+  // 즐찾 버튼 핸들러
+  const handleFavorite = async () => {
+    if (!isLogin) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      if (isFavorited) {
+        // 즐찾 삭제
+        const response = await fetch(`http://localhost:8080/community/favorite/${data.board_id}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+        if (response.ok) {
+          setIsFavorited(false);
+        }
+      } else {
+        // 즐찾 추가
+        const response = await fetch("http://localhost:8080/community/favorite", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ board_id: Number(data.board_id) }),
+        });
+        if (response.ok) {
+          setIsFavorited(true);
+        }
+      }
+    } catch (err) {
+      console.error("즐찾 처리 실패", err);
+    }
   };
 
   useEffect(() => {
@@ -172,32 +274,52 @@ function CommunityDetail() {
         <p className="text-sm mr-2">{data.nickname}</p>
         <span className="text-xs">{day}</span>
       </div>
-      <div className="flex items-center mb-5">
-        <div className="mr-3">
-          <img src="" alt="" />
-          <p className="text-sm">{data.recommand_amout}</p>
-        </div>
-        <div>
-          <img src="" alt="" />
-          <p className="text-sm">{data.view_amout}</p>
-        </div>
-      </div>
+      
+      
+
       <div>
         <div
           className="text-base"
           dangerouslySetInnerHTML={{ __html: data.content }}
         ></div>
       </div>
-      <div className="flex items-center mt-3 mb-3">
-        <button className="text-sm">
-          <img src="" alt="" />
-          <p>추천</p>
+
+      <div className="flex items-center mb-5">
+        <button
+          type="button"
+          className="flex items-center gap-1 mr-3 hover:opacity-75"
+          onClick={handleRecommend}
+        >
+          <img src={`../../public/img/${isRecommended ? 'goodBrown' : 'goodBlack'}.svg`} alt="추천" className="w-5 h-5" />
+          <p className="text-sm">{recommendCount}</p>
         </button>
-        <button className="text-sm">
-          <img src="" alt="" />
-          <p>즐찾</p>
+        <button
+          type="button"
+          className="flex items-center gap-1 hover:opacity-75"
+          onClick={handleFavorite}
+        >
+          <img src={`../../public/img/${isFavorited ? 'BrownStar' : 'BlackStar'}.svg`} alt="즐찾" className="w-5 h-5" />
         </button>
       </div>
+
+      {/* <div className="flex items-center mt-3 mb-3">
+        <button
+          type="button"
+          className="flex items-center gap-1 mr-4 hover:opacity-75"
+          onClick={handleRecommend}
+        >
+          <img src={`../../public/img/${isRecommended ? 'goodbrown' : 'goodBlack'}.svg`} alt="추천" className="w-5 h-5" />
+          <p className="text-sm">추천</p>
+        </button>
+        <button
+          type="button"
+          className="flex items-center gap-1 hover:opacity-75"
+          onClick={handleFavorite}
+        >
+          <img src={`../../public/img/${isFavorited ? 'BrownStar' : 'BlackStar'}.svg`} alt="즐찾" className="w-5 h-5" />
+          <p className="text-sm">즐찾</p>
+        </button>
+      </div> */}
 
       {/*댓글영역*/}
 
