@@ -32,10 +32,11 @@ router.post("/write", async (req, res) => {
   console.log("작성 요청:", { user_id, content, board_id }); // 디버깅용 로그
 
   try {
-    // 댓글 저장 (board_id 포함)
+    // 댓글 저장 (한국 시간 기준)
+    const kstDate = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString();
     await pool.query(
-      "INSERT INTO comment(content, user_id, board_id) VALUES($1, $2, $3)", // 3개의 컬럼
-      [content, user_id, board_id] // 3개의 값
+      "INSERT INTO comment(content, user_id, board_id, date) VALUES($1, $2, $3, $4)",
+      [content, user_id, board_id, kstDate]
     );
     return res.status(200).json({ msg: "댓글 작성 성공" });
   } catch (err) {
