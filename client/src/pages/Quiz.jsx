@@ -47,7 +47,13 @@ function AllCategory() {
   return (
     <div className="w-full">
       <QuizCard quizData={data[num]} category={category} />
-      <QuizButton nextBtn={() => nextBtn()} prevBtn={() => prevBtn()} data={data[num]} category={category} />
+      <QuizButton
+        nextBtn={() => nextBtn()}
+        prevBtn={() => prevBtn()}
+        data={data[num]}
+        category={category}
+        isLast={num >= data.length - 1}
+      />
     </div>
   );
 }
