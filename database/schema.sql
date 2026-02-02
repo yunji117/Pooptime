@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(255) UNIQUE NOT NULL,
   user_nick VARCHAR(50) UNIQUE NOT NULL,
   gender VARCHAR(10),
-  birth_date DATE
+  birth_date DATE,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS user_connection (

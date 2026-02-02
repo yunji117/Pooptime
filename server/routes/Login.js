@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
     }
 
     //조회
-    const result = await pool.query('SELECT id, user_id, user_nick, password FROM users WHERE user_id = $1', [user_id]);
+    const result = await pool.query('SELECT id, user_id, user_nick, email, password FROM users WHERE user_id = $1', [user_id]);
     if (result.rows.length === 0) {
       return res.status(401).json({ success: false, message: '사용자가 존재하지 않습니다' });
     }
@@ -74,6 +74,7 @@ router.post('/', async (req, res) => {
         id: result.rows[0].id,
         user_id: result.rows[0].user_id,
         user_nick: result.rows[0].user_nick,
+        user_email: result.rows[0].email,
       }
       console.log('세션 저장 확인', req.session.user)
 

@@ -6,6 +6,7 @@ import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Mypage from "./pages/Mypage.jsx";
+import MemberInfo from "./pages/MemberInfo.jsx";
 import Layout from "./layout/Layout.jsx";
 import Write from "./pages/Write.jsx";
 import RegisterMain from "./pages/RegisterMain.jsx";
@@ -32,6 +33,7 @@ function App() {
               <Route path="/Community/write/:board_id" element={<Write />} />
               <Route path="/Login" element={<Login />} />
               <Route path="/Mypage" element={<Mypage />} />
+              <Route path="/Mypage/info" element={<MemberInfo />} />
               <Route path="/Register" element={<RegisterMain />} />
               {/* Layout 적용 구간: path 가 "/KnowledgeHorror" 또는 "/Quiz" 인 경우에만 */}
               <Route element={<Layout />}>

@@ -37,6 +37,9 @@ function LoginInput({ autoLogin }) {
       sessionStorage.setItem("id", result.user.id);
       sessionStorage.setItem("user_id", result.user.user_id);
       sessionStorage.setItem("user_nick", result.user.user_nick);
+      if (result.user.user_email) {
+        sessionStorage.setItem("user_email", result.user.user_email);
+      }
       // 성공하면 퀴즈로 이동
       navigate("/quiz");
       loginHandle();

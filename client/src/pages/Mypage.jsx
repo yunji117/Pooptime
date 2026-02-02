@@ -24,10 +24,14 @@ function Mypage() {
         <img className="w-[40px]" src="./public/img/poopNameImg.svg" alt="" />
         <h4 className="text-xm ml-4">{nickname} 님</h4>
       </div>
-      <div className="flex items-center justify-between shadow-[0_0_5px_0_rgba(0,0,0,0.1),_0_0_1px_0_rgba(0,0,0,0.1)] p-3 mb-2">
+      <button
+        type="button"
+        onClick={() => navigate("/Mypage/info")}
+        className="flex w-full items-center justify-between shadow-[0_0_5px_0_rgba(0,0,0,0.1),_0_0_1px_0_rgba(0,0,0,0.1)] p-3 mb-2"
+      >
         <p className="text-sm">회원정보</p>
         <img src="./public/img/arrowRight.svg" alt="" />
-      </div>
+      </button>
       <div className="flex items-center justify-between shadow-[0_0_5px_0_rgba(0,0,0,0.1),_0_0_1px_0_rgba(0,0,0,0.1)] p-3 mb-2">
         <p className="text-sm">내가 맞춘 퀴즈</p>
         <img src="./public/img/arrowRight.svg" alt="" />
