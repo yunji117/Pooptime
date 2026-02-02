@@ -50,3 +50,13 @@ CREATE TABLE IF NOT EXISTS common_sense (
   question TEXT NOT NULL,
   answer TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS user_correct_quiz (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  category VARCHAR(20) NOT NULL,
+  question TEXT NOT NULL,
+  answer TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  UNIQUE (user_id, category, question)
+);

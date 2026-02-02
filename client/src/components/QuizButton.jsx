@@ -55,6 +55,18 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz', isLast = false 
     if (userAnswer === data.answer) {
       inputRef.current.value = ''
       setIsAnswer(false)
+      fetch("http://localhost:8080/quiz/correct", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          category,
+          question: data?.question || "",
+          answer: data?.answer || "",
+        }),
+      }).catch(console.error)
       setIsModalOpen(true)
     } else {
 
