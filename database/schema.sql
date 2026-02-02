@@ -60,3 +60,11 @@ CREATE TABLE IF NOT EXISTS user_correct_quiz (
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   UNIQUE (user_id, category, question)
 );
+
+CREATE TABLE IF NOT EXISTS user_viewed_content (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  board_id INTEGER NOT NULL REFERENCES board(board_id) ON DELETE CASCADE,
+  viewed_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  UNIQUE (user_id, board_id)
+);

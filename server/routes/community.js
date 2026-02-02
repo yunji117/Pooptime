@@ -98,4 +98,71 @@ router.delete('/delete/:id', async (req, res) => {
   }
 })
 
+router.post('/view', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, msg: '로그인 필요' });
+  }
+
+  const { board_id } = req.body;
+  if (!board_id) {
+    return res.status(400).json({ success: false, msg: 'board_id가 필요합니다.' });
+  }
+
+  try {
+    await pool.query(
+      "INSERT INTO user_viewed_content (user_id, board_id, viewed_at) VALUES ($1, $2, NOW()) ON CONFLICT (user_id, board_id) DO UPDATE SET viewed_at = EXCLUDED.viewed_at",
+      [req.session.user.id, board_id]
+    );
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('내가 본 컨텐츠 저장 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+router.get('/viewed', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, msg: '로그인 필요' });
+  }
+
+  try {
+    await pool.query(
+      "DELETE FROM user_viewed_content WHERE user_id = $1 AND viewed_at < NOW() - INTERVAL '30 days'",
+      [req.session.user.id]
+    );
+
+    const result = await pool.query(
+      `SELECT uvc.id, uvc.viewed_at, b.board_id, b.title, b.date
+       FROM user_viewed_content AS uvc
+       JOIN board AS b ON uvc.board_id = b.board_id
+       WHERE uvc.user_id = $1
+       ORDER BY uvc.viewed_at DESC`,
+      [req.session.user.id]
+    );
+
+    return res.status(200).json({ success: true, items: result.rows });
+  } catch (err) {
+    console.error('내가 본 컨텐츠 조회 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+router.delete('/viewed/:id', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, msg: '로그인 필요' });
+  }
+
+  const { id } = req.params;
+  try {
+    await pool.query(
+      "DELETE FROM user_viewed_content WHERE id = $1 AND user_id = $2",
+      [id, req.session.user.id]
+    );
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('내가 본 컨텐츠 삭제 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
 export default router;

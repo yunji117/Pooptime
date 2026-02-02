@@ -82,6 +82,18 @@ function CommunityDetail() {
       .catch(console.error);
   }, [data.board_id]);
 
+  useEffect(() => {
+    if (!data.board_id) return;
+    fetch("http://localhost:8080/community/view", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ board_id: Number(data.board_id) }),
+    }).catch(console.error);
+  }, [data.board_id]);
+
   const commentWrite = async () => {
     if (!content || content.trim() === "") {
       alert("댓글 내용을 입력해주세요.");
@@ -128,8 +140,14 @@ function CommunityDetail() {
 
   return (
     <div className="w-full">
+      <div className="mb-3 flex items-center gap-2">
+        <button type="button" onClick={() => navigate(-1)}>
+          <img src="../../public/img/arrowLeft.svg" alt="뒤로가기" />
+        </button>
+      </div>
+       <h2 className="text-xl">커뮤니티 상세</h2>
       <div>
-        <h2 className="text-xl">커뮤니티 상세</h2>
+
       </div>
       {isLogin && isSame ? (
         <>
