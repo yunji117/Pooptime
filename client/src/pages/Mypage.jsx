@@ -56,10 +56,14 @@ function Mypage() {
         <p className="text-sm">나의 즐겨찾기 컨텐츠</p>
         <img src="./public/img/arrowRight.svg" alt="" />
       </button>
-      <div className="flex items-center justify-between shadow-[0_0_5px_0_rgba(0,0,0,0.1),0_0_1px_0_rgba(0,0,0,0.1)] p-3 mb-2">
+      <button
+        type="button"
+        onClick={() => navigate("/Mypage/recommend")}
+        className="flex w-full items-center justify-between shadow-[0_0_5px_0_rgba(0,0,0,0.1),0_0_1px_0_rgba(0,0,0,0.1)] p-3 mb-2"
+      >
         <p className="text-sm">내가 추천한 컨텐츠</p>
         <img src="./public/img/arrowRight.svg" alt="" />
-      </div>
+      </button>
       <div className="flex items-center justify-between shadow-[0_0_5px_0_rgba(0,0,0,0.1),0_0_1px_0_rgba(0,0,0,0.1)] p-3 mb-2">
         <p className="text-sm">고객센터</p>
         <img src="./public/img/arrowRight.svg" alt="" />

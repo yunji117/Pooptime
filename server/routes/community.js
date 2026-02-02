@@ -178,7 +178,7 @@ router.post('/recommend', async (req, res) => {
 
   try {
     await pool.query(
-      "INSERT INTO user_recommend (user_id, board_id, created_at) VALUES ($1, $2, NOW())",
+      "INSERT INTO user_recommend (user_id, board_id, created_at) VALUES ($1, $2, NOW()) ON CONFLICT (user_id, board_id) DO NOTHING",
       [req.session.user.id, board_id]
     );
     return res.status(200).json({ success: true });
@@ -322,6 +322,30 @@ router.get('/user/favorites', async (req, res) => {
     return res.status(200).json({ success: true, items: result.rows });
   } catch (err) {
     console.error('즐찾 목록 조회 실패', err);
+    return res.status(500).json({ success: false, msg: '서버 내부 에러' });
+  }
+});
+
+// 사용자의 추천 목록 조회
+router.get('/user/recommends', async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, msg: '로그인 필요' });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT ur.id, ur.created_at, b.board_id, b.title, b.date, u.user_nick as nickname
+       FROM user_recommend AS ur
+       JOIN board AS b ON ur.board_id = b.board_id
+       JOIN users AS u ON b.user_id = u.id
+       WHERE ur.user_id = $1
+       ORDER BY ur.created_at DESC`,
+      [req.session.user.id]
+    );
+
+    return res.status(200).json({ success: true, items: result.rows });
+  } catch (err) {
+    console.error('추천 목록 조회 실패', err);
     return res.status(500).json({ success: false, msg: '서버 내부 에러' });
   }
 });
