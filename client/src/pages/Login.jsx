@@ -28,6 +28,11 @@ function Login() {
       <LoginInput autoLogin={autoLogin}/>
       <FindAccount setAutoLogin={setAutoLogin}/>
       <EasyLogin/>
+      <Button
+        text='로그인 없이 이용하기'
+        colorClass={'bg-(--brand-100) text-(--brand-800) hover:bg-(--brand-200)'}
+        clickEvent={() => navigate('/Quiz')}
+      />
       <Button text='회원가입' colorClass={''} clickEvent={()=>navigate('/Register')}/>
     </div>
   );
