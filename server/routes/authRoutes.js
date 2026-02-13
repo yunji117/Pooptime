@@ -10,6 +10,7 @@ router.get("/check", async (req, res) => {
         id: req.session.user.id,
         user_nick: req.session.user.user_nick,
         user_email: req.session.user.user_email,
+        is_admin: req.session.user.is_admin,
       },
     });
   } else{

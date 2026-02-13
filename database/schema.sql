@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
   user_id VARCHAR(50) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
+  is_admin BOOLEAN NOT NULL DEFAULT FALSE,
   user_nick VARCHAR(50) UNIQUE NOT NULL,
   gender VARCHAR(10),
   birth_date DATE,
@@ -82,4 +83,14 @@ CREATE TABLE IF NOT EXISTS user_favorite (
   board_id INTEGER NOT NULL REFERENCES board(board_id) ON DELETE CASCADE,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   UNIQUE (user_id, board_id)
+);
+
+CREATE TABLE IF NOT EXISTS support_inquiry (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_email VARCHAR(255) NOT NULL,
+  message TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  reply TEXT,
+  replied_at TIMESTAMP
 );

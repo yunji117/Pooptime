@@ -12,6 +12,7 @@ import login from "./routes/Login.js";
 import email from "./routes/email.js";
 import comment from "./routes/comment.js";
 import check from "./routes/authRoutes.js";
+import support from "./routes/support.js";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import YAML from 'yamljs';
@@ -63,6 +64,7 @@ app.use("/community", community);
 app.use("/login", login);
 app.use("/comment", comment);
 app.use("/email", email);
+app.use("/support", support);
 
 const PORT = process.env.SERVERPORT;
 app.listen(PORT, () => {

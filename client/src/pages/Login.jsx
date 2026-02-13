@@ -24,7 +24,7 @@ function Login() {
 
   return (
     <div className="flex flex-col justify-center h-full w-full gap-3">
-      <h1 className="text-2xl mb-[30px]">로그인</h1>
+      <h1 className="text-2xl mb-7.5">로그인</h1>
       <LoginInput autoLogin={autoLogin}/>
       <FindAccount setAutoLogin={setAutoLogin}/>
       <EasyLogin/>

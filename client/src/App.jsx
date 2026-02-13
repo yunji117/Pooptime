@@ -14,6 +14,10 @@ import MyRecommend from "./pages/MyRecommend.jsx";
 import Layout from "./layout/Layout.jsx";
 import Write from "./pages/Write.jsx";
 import RegisterMain from "./pages/RegisterMain.jsx";
+import Support from "./pages/Support.jsx";
+import AdminSupport from "./pages/AdminSupport.jsx";
+import AdminLogin from "./pages/AdminLogin.jsx";
+import AdminQuiz from "./pages/AdminQuiz.jsx";
 import { LoginProvider } from "./context/loginContext.jsx";
 
 import Nav from "./commonComponents/Nav.jsx";
@@ -43,6 +47,10 @@ function App() {
               <Route path="/Mypage/viewed" element={<MyViewedContent />} />
               <Route path="/Mypage/favorite" element={<MyFavorite />} />
               <Route path="/Mypage/recommend" element={<MyRecommend />} />
+              <Route path="/Mypage/support" element={<Support />} />
+              <Route path="/Admin/login" element={<AdminLogin />} />
+              <Route path="/Admin/support" element={<AdminSupport />} />
+              <Route path="/Admin/quiz" element={<AdminQuiz />} />
               <Route path="/Register" element={<RegisterMain />} />
               {/* Layout 적용 구간: path 가 "/KnowledgeHorror" 또는 "/Quiz" 인 경우에만 */}
               <Route element={<Layout />}>

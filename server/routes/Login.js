@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
     }
 
     //조회
-    const result = await pool.query('SELECT id, user_id, user_nick, email, password FROM users WHERE user_id = $1', [user_id]);
+    const result = await pool.query('SELECT id, user_id, user_nick, email, password, is_admin FROM users WHERE user_id = $1', [user_id]);
     if (result.rows.length === 0) {
       return res.status(401).json({ success: false, message: '사용자가 존재하지 않습니다' });
     }
@@ -75,6 +75,7 @@ router.post('/', async (req, res) => {
         user_id: result.rows[0].user_id,
         user_nick: result.rows[0].user_nick,
         user_email: result.rows[0].email,
+        is_admin: result.rows[0].is_admin,
       }
       console.log('세션 저장 확인', req.session.user)
 
@@ -84,6 +85,51 @@ router.post('/', async (req, res) => {
   }
   catch (err) {
     console.error('로그인 처리 중 오류', err)
+    return res.status(500).json({ success: false, message: '서버오류' })
+  }
+})
+
+// 관리자 로그인
+router.post('/admin', async (req, res) => {
+  const { user_id, password, autoLogin } = req.body
+
+  try {
+    if (!user_id || !password) {
+      return res.status(400).json({ success: false, message: '아이디와 비밀번호를 입력하세요' })
+    }
+
+    const result = await pool.query('SELECT id, user_id, user_nick, email, password, is_admin FROM users WHERE user_id = $1', [user_id]);
+    if (result.rows.length === 0) {
+      return res.status(401).json({ success: false, message: '사용자가 존재하지 않습니다' });
+    }
+
+    const isMatch = await bcrypt.compare(password, result.rows[0].password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: '아이디 혹은 비밀번호가 일치하지 않습니다.' });
+    }
+
+    if (!result.rows[0].is_admin) {
+      return res.status(403).json({ success: false, message: '관리자 권한이 없습니다.' });
+    }
+
+    if (autoLogin) {
+      req.session.cookie.maxAge = 1000 * 60 * 60 * 24 * 3
+    } else {
+      req.session.cookie.maxAge = 1000 * 60 * 60
+    }
+
+    req.session.user = {
+      id: result.rows[0].id,
+      user_id: result.rows[0].user_id,
+      user_nick: result.rows[0].user_nick,
+      user_email: result.rows[0].email,
+      is_admin: result.rows[0].is_admin,
+    }
+
+    return res.json({ success: true, message: '관리자 로그인 성공', user: req.session.user })
+  }
+  catch (err) {
+    console.error('관리자 로그인 처리 중 오류', err)
     return res.status(500).json({ success: false, message: '서버오류' })
   }
 })

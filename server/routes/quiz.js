@@ -1,5 +1,6 @@
 import express from "express";
 import pool from "../config/database.js";
+import { requireAdmin } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -12,7 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', requireAdmin, async (req, res) => {
   const { question, answer } = req.body
 
   //값이 없을 때
@@ -30,6 +31,48 @@ router.post('/', async (req, res) => {
     res.status(500).json('전송 실패');
   }
 })
+
+router.put('/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { question, answer } = req.body;
+
+  if (!question || !answer) {
+    return res.status(400).json('데이터의 구조가 잘못 되었습니다.');
+  }
+
+  try {
+    const result = await pool.query(
+      'UPDATE quiz SET question = $1, answer = $2 WHERE id = $3',
+      [question, answer, id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json('데이터를 찾을 수 없습니다.');
+    }
+
+    return res.status(200).json('수정 성공');
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json('수정 실패');
+  }
+});
+
+router.delete('/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query('DELETE FROM quiz WHERE id = $1', [id]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json('데이터를 찾을 수 없습니다.');
+    }
+
+    return res.status(200).json('삭제 성공');
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json('삭제 실패');
+  }
+});
 
 router.post('/correct', async (req, res) => {
   if (!req.session.user) {
