@@ -122,7 +122,7 @@ function AdminSupport() {
               ) : (
                 <div className="mt-3 flex flex-col gap-2">
                   <textarea
-                    className="w-full min-h-[90px] rounded-md border border-gray-200 p-2"
+                    className="w-full min-h-22.5 rounded-md border border-gray-200 p-2"
                     placeholder="답변 내용을 입력하세요"
                     value={replyDrafts[item.id] || ""}
                     onChange={(e) =>

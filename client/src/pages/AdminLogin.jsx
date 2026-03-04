@@ -47,7 +47,7 @@ function AdminLogin() {
 
   return (
     <div className="flex flex-col justify-center h-full w-full gap-3">
-      <h1 className="text-2xl mb-[30px]">관리자 로그인</h1>
+      <h1 className="text-2xl mb-7.5">관리자 로그인</h1>
       <form className="flex flex-col gap-2" onSubmit={(e) => e.preventDefault()}>
         <input
           type="text"

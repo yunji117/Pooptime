@@ -111,7 +111,7 @@ function Support() {
       {tab === "send" && (
         <div className="flex flex-col gap-3">
           <textarea
-            className="w-full min-h-[140px] rounded-md border border-gray-200 p-3 focus:outline-none focus:ring-2 focus:ring-(--brand-200)"
+            className="w-full min-h-35 rounded-md border border-gray-200 p-3 focus:outline-none focus:ring-2 focus:ring-(--brand-200)"
             placeholder="문의 내용을 입력해주세요"
             value={message}
             onChange={(e) => setMessage(e.target.value)}

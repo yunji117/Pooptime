@@ -170,7 +170,7 @@ function AdminQuiz() {
           />
           <textarea
             placeholder="질문"
-            className="rounded-md border border-gray-200 p-2 min-h-[80px]"
+            className="rounded-md border border-gray-200 p-2 min-h-20"
             value={form.problem}
             onChange={(e) => setForm((prev) => ({ ...prev, problem: e.target.value }))}
           />
@@ -189,7 +189,7 @@ function AdminQuiz() {
       <>
         <textarea
           placeholder="질문"
-          className="rounded-md border border-gray-200 p-2 min-h-[80px]"
+          className="rounded-md border border-gray-200 p-2 min-h-20"
           value={form.question}
           onChange={(e) => setForm((prev) => ({ ...prev, question: e.target.value }))}
         />
@@ -221,7 +221,7 @@ function AdminQuiz() {
             }
           />
           <textarea
-            className="w-full mb-2 rounded-md border border-gray-200 p-2 min-h-[80px]"
+            className="w-full mb-2 rounded-md border border-gray-200 p-2 min-h-20"
             value={draft.problem ?? item.problem ?? ""}
             onChange={(e) =>
               setDrafts((prev) => ({
@@ -251,7 +251,7 @@ function AdminQuiz() {
     return (
       <div key={item.id} className="rounded-lg border border-(--brand-100) p-3">
         <textarea
-          className="w-full mb-2 rounded-md border border-gray-200 p-2 min-h-[80px]"
+          className="w-full mb-2 rounded-md border border-gray-200 p-2 min-h-20"
           value={draft.question ?? item.question ?? ""}
           onChange={(e) =>
             setDrafts((prev) => ({
