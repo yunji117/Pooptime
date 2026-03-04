@@ -36,7 +36,7 @@ function Nav() {
   }, []);
 
   return (
-    <div className="absolute bottom-0 transform -translate-x-50% w-full rounded-t-2xl flex items-center justify-center">
+    <div className="fixed bottom-0 left-0 z-40 w-full rounded-t-2xl flex items-center justify-center">
       <NavButton onClick={showNav} />
       <NavDiv
         navRef={navRef}

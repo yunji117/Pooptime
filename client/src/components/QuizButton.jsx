@@ -142,7 +142,7 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz', isLast = false 
       <div className="w-full flex border border-[#D9D9D9]/70 rounded-md overflow-hidden">
         {category === "horror" ? (
           <textarea
-            className="w-full outline-none p-3 min-h-28 resize-none"
+            className="w-full outline-none p-3 min-h-20 resize-none"
             placeholder="괴담 문제의 해답을 5단어 이상으로 입력해주세요."
             ref={inputRef}
           />
