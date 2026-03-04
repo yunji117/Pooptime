@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const categoryLabel = {
   quiz: "유머",
   knowledge: "상식",
+  horror: "괴담",
 };
 
 function MyCorrectQuiz() {

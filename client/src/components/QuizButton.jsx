@@ -18,6 +18,18 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz', isLast = false 
   //정답 모달
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  const clearInput = () => {
+    if (inputRef.current) {
+      inputRef.current.value = ''
+    }
+  }
+
+  const countWords = (value) =>
+    value
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean).length
+
   useEffect(() => {
 
     if (isShow) {
@@ -46,14 +58,26 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz', isLast = false 
   // 카테고리가 변경될 때 정답 초기화
   useEffect(() => {
     setIsAnswer(false);
+    clearInput();
   }, [category]);
 
   //정답 제출 버튼
   const checkAnswer = () => {
-    const userAnswer = inputRef.current.value.trim()
+    const userAnswer = inputRef.current?.value?.trim() || ''
+    const isHorror = category === "horror"
+    const isCorrect = isHorror
+      ? countWords(userAnswer) >= 5
+      : userAnswer === data.answer
 
-    if (userAnswer === data.answer) {
-      inputRef.current.value = ''
+    if (!userAnswer) {
+      setIsShow(true)
+      setToastText(isHorror ? '답변을 입력해주세요' : '정답을 입력해주세요')
+      setTextColor('text-red-500')
+      return
+    }
+
+    if (isCorrect) {
+      clearInput()
       setIsAnswer(false)
       fetch("http://localhost:8080/quiz/correct", {
         method: "POST",
@@ -63,16 +87,16 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz', isLast = false 
         credentials: "include",
         body: JSON.stringify({
           category,
-          question: data?.question || "",
+          question: isHorror
+            ? data?.title || data?.problem || ""
+            : data?.question || "",
           answer: data?.answer || "",
         }),
       }).catch(console.error)
       setIsModalOpen(true)
     } else {
-
-      //팝업
       setIsShow(true)
-      setToastText('오답입니다')
+      setToastText(isHorror ? '괴담 답변은 5단어 이상 입력해주세요' : '오답입니다')
       setTextColor('text-red-500')
     }
   }
@@ -81,7 +105,9 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz', isLast = false 
     <div className="flex flex-col gap-5 text-center">
       <DetailModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="flex flex-col gap-4 text-center min-w-64">
-          <div className="text-lg font-semibold text-blue-500">정답입니다.</div>
+          <div className="text-lg font-semibold text-blue-500">
+            {category === "horror" ? "정답 처리되었습니다." : "정답입니다."}
+          </div>
           {isLast && (
             <div className="text-sm text-(--text-600)">마지막 문제 입니다.</div>
           )}
@@ -92,6 +118,7 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz', isLast = false 
               className="flex-1 min-w-28 rounded-md bg-(--brand-100) text-(--brand-800) px-4 py-2 text-sm hover:bg-(--brand-200)"
               onClick={() => {
                 setIsModalOpen(false)
+                clearInput()
                 prevBtn()
               }}
             >
@@ -102,6 +129,7 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz', isLast = false 
               className="flex-1 min-w-28 rounded-md bg-(--brand-600) text-white px-4 py-2 text-sm hover:bg-(--brand-700)"
               onClick={() => {
                 setIsModalOpen(false)
+                clearInput()
                 nextBtn()
               }}
             >
@@ -110,32 +138,38 @@ function QuizButton({ nextBtn, prevBtn, data, category = 'quiz', isLast = false 
           </div>
         </div>
       </DetailModal>
-      <div className={(category === "knowledge") || (category === "quiz") ? "" : "hidden"}>
-        {/* 팝업 */}
-        <ToastPopup text={toastText} isShow={isShow} textColor={textColor} />
-        {/* 정답 작성 및 확인 */}
-        <div className="w-full flex border border-[#D9D9D9]/70">
+      <ToastPopup text={toastText} isShow={isShow} textColor={textColor} />
+      <div className="w-full flex border border-[#D9D9D9]/70 rounded-md overflow-hidden">
+        {category === "horror" ? (
+          <textarea
+            className="w-full outline-none p-3 min-h-28 resize-none"
+            placeholder="괴담 문제의 해답을 5단어 이상으로 입력해주세요."
+            ref={inputRef}
+          />
+        ) : (
           <input
             className="w-full outline-none p-2"
             type="text"
             placeholder="정답을 입력해주세요."
             ref={inputRef}
           />
-          {/* 확인버튼 누르면 정답 일치하는지 확인 */}
-          <button
-            className="bg-[#8E5E43] border-[#8E5E43] p-2 rounded-[0px_3px_3px_0px] text-white whitespace-nowrap cursor-pointer"
-            onClick={() => checkAnswer()}>확인</button>
-        </div>
+        )}
+        <button
+          className="bg-[#8E5E43] border-[#8E5E43] px-4 py-2 text-white whitespace-nowrap cursor-pointer self-stretch"
+          onClick={() => checkAnswer()}
+        >
+          확인
+        </button>
       </div>
       {/* 정답보기 */}
       <QuizControl btnText={btnText} answerBtn={() => setIsAnswer(!isAnswer)}
         prevBtn={() => {
-          inputRef.current.value = ''
+          clearInput()
           setIsAnswer(false)
           prevBtn()
         }}
         nextBtn={() => {
-          inputRef.current.value = ''
+          clearInput()
           setIsAnswer(false)
           nextBtn()
         }} />
